@@ -1,0 +1,24 @@
+security:
+  enable_authenticator_manager: true
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: uuid
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      custom_authenticators:
+        - App\Security\MagicLinkAuthenticator
+      entry_point: App\Security\MagicLinkAuthenticator
+      logout:
+        path: /logout
+        target: /login
+
+  access_control:
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/, roles: ROLE_USER }
