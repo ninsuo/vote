@@ -1,0 +1,16 @@
+{% set random = random() %}
+
+<div class="editor-container" id="{{ random }}">
+    {% if form is defined %}
+        <fieldset class="well">
+            {% if title|default(false) %}
+                <label class="lead">{{ title }}</label>
+            {% endif %}
+            {{ form(form) }}
+        </fieldset>
+    {% else %}
+        <div class="editor-open" data-endpoint="{{ endpoint }}" data-output="#{{ random }}">
+            {{ text }}
+        </div>
+    {% endif %}
+</div>

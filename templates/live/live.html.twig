@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <div id="poll" data-current-project="-1"></div>
+
+{% endblock %}
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/themes/css-stars.min.css"/>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/jquery.barrating.min.js"></script>
+
+    <script type="text/javascript">
+
+        {{ include('vote/_ratings_save.js.twig') }}
+
+        setInterval(function () {
+            $.post('{{ path('live') }}', {
+                current: $('#poll').data('current-project'),
+            }, function (data) {
+                if (data) {
+                    $('#poll').html(data);
+                }
+            });
+        }, 1000);
+
+    </script>
+
+{% endblock %}

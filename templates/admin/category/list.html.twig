@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage categories{% endblock %}
+
+{% block body %}
+
+    <p>When a vote is active, participants will be able to vote from 1 to 5 on every categories.</p>
+
+    <div class="well">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 23.333333333333%;">ID</th>
+                <th style="width: 23.333333333333%;">Name</th>
+                <th style="width: 23.333333333333%;">Position</th>
+                <th style="width: 23.333333333333%;">Image</th>
+                <th style="width: 30%;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>
+                        {{ category.id }}
+                    </td>
+                    <td>
+                        {{ include('editor.html.twig', {
+                            'text': category.name,
+                            'endpoint': path('admin_category_edit_name', {id: category.id}),
+                        }) }}
+                    </td>
+                    <td>
+                        {{ include('editor.html.twig', {
+                            'text': category.position,
+                            'endpoint': path('admin_category_edit_position', {id: category.id}),
+                        }) }}
+                    </td>
+                    <td>
+                        {% if category.image %}
+                            <img src="data:image/png;base64,{{ category.image }}" style="max-width: 32px; max-height: 32px;"/>
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_category_delete', {id: category.id, token: csrf_token('admin_category')}) }}"
+                           data-message="Do you really want to delete category #{{ category.id }}?"
+                           class="requires-confirmation btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <fieldset class="well">
+        <label class="lead">Create new category</label>
+        {{ form(create) }}
+    </fieldset>
+
+{% endblock %}
+

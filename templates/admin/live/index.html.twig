@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% import _self as me %}
+
+{% block title %}Live management{% endblock %}
+
+{% macro status(current, status) %}
+    {% if current == status %}
+        <a href="#" class="btn btn-danger disabled">Live</a>
+    {% else %}
+        <a href="{{ path('admin_live_change', {csrf: csrf_token('live'), id: current}) }}"
+           class="btn btn-success">Live</a>
+    {% endif %}
+{% endmacro %}
+
+{% block body %}
+
+    <p>When the vote state is "LIVE", you can control what's rendered on attendees' screen.</p>
+
+    {{ form(message) }}
+
+    <table class="table">
+        <thead>
+        <th>Project</th>
+        <th>Status</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td><em>(none)</em></td>
+            <td>{{ me.status(0, status) }}</td>
+        </tr>
+        {% for project in projects %}
+            <tr>
+                <td>{{ project.title }}</td>
+                <td>{{ me.status(project.id, status) }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

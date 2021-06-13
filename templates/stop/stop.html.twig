@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vote Box{% endblock %}
+
+{% block body %}
+
+    <h3>Presentations have not started yet.</h3>
+
+    <table class="table">
+        <thead>
+        <th>Concurrents</th>
+        </thead>
+        <tbody>
+        {% for project in projects %}
+            <tr>
+                <td>{{ project.title }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <p class="text-center">
+        If your project is missing, please contact the organizers!
+    </p>
+
+{% endblock %}

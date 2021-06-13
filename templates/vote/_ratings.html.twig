@@ -1,0 +1,37 @@
+<div class="row well">
+
+    <div class="col-md-12">
+        <h4>
+            <p class="text-center">{{ project.title }}</p>
+        </h4>
+    </div>
+
+    {% for category in categories %}
+
+        <div class="col-md-{{ (12 / categories|length)|round(0, 'floor') }}">
+
+            {% if settings('state') == 'LIVE' %}
+                {% set grade = grades[category.id]|default('0') %}
+            {% elseif settings('state') == 'VOTE' %}
+                {% set grade = grades[project.id][category.id]|default('0') %}
+            {% endif %}
+
+            {{ include('category.html.twig', {category: category, inline: true}) }}
+
+            <select name="grade"
+                    class="rating"
+                    data-project="{{ project.id }}"
+                    data-category="{{ category.id }}"
+                    data-grade="{{ grade }}"
+                    data-endpoint="{{ path('rate', {csrf: csrf_token('rate')}) }}">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+
+    {% endfor %}
+
+</div>

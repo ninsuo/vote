@@ -1,0 +1,11 @@
+$(function () {
+    $('body').on('change', '.rating', function () {
+        var that = $(this);
+
+        $.post(that.data('endpoint'), {
+            project: that.data('project'),
+            category: that.data('category'),
+            grade: that.val()
+        });
+    });
+});

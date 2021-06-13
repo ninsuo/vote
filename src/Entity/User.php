@@ -39,9 +39,9 @@ class User implements UserInterface
      */
     private $roles = [];
 
-    static public function createEmailHash(string $email)
+    static public function createEmailHash(string $email, string $secret)
     {
-        return hash_hmac('sha256', $email, getenv('APP_SECRET'));
+        return hash_hmac('sha256', $email, $secret);
     }
 
     public function getId() : ?int

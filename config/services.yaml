@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
   allowed_emails: '%env(VALID_EMAIL_PATTERN)%'
+  email_sender: '%env(EMAIL_SENDER)%'
+  secret: '%env(APP_SECRET)%'
 
 services:
   # default configuration for services in *this* file

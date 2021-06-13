@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage projects{% endblock %}
+
+{% block body %}
+
+    <p>Participants will be able to vote on every projects.</p>
+
+    <div class="well">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="width: 23.333333333333%;">ID</th>
+                <th style="width: 23.333333333333%;">Title</th>
+                <th style="width: 23.333333333333%;">Position</th>
+                <th style="width: 30%;">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for project in projects %}
+                <tr>
+                    <td>
+                        {{ project.id }}
+                    </td>
+                    <td>
+                        {{ include('editor.html.twig', {
+                            'text': project.title,
+                            'endpoint': path('admin_project_edit_title', {id: project.id}),
+                        }) }}
+                    </td>
+                    <td>
+                        {{ include('editor.html.twig', {
+                            'text': project.position,
+                            'endpoint': path('admin_project_edit_position', {id: project.id}),
+                        }) }}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_project_delete', {id: project.id, token: csrf_token('admin_project')}) }}"
+                           data-message="Are you sure that you want to remove project #{{ project.id }}?"
+                           class="requires-confirmation btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <fieldset class="well">
+        <label class="lead">Create new project</label>
+        {{ form(create) }}
+    </fieldset>
+
+{% endblock %}

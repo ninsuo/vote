@@ -1,0 +1,25 @@
+<script type="text/javascript">
+
+    $('#poll').data('current-project', {{ current|e('js') }});
+
+</script>
+
+{% if not current %}
+
+    <div class="well text-center">
+        <h3>{{ message }}</h3>
+    </div>
+
+{% else %}
+
+    {{ include('vote/_ratings.html.twig') }}
+
+    <p class="text-center">{{ message }}</p>
+
+    <script type="text/javascript">
+
+        {{ include('vote/_ratings_show.js.twig') }}
+
+    </script>
+
+{% endif %}

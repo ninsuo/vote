@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vote state{% endblock %}
+
+{% block body %}
+
+    <ul>
+        <li>STOP = no campaigns are active, there are nothing to display.</li>
+        <li>
+            LIVE = presentations are currently in progress and participants can rate the currently on-stage project
+            (see the <a href="{{ path('admin_live') }}">live management</a> page).
+        </li>
+        <li>
+            VOTE = presentations have ended, but it is still possible for participants to vote for some time, it
+            is useful when presentations are recorded for peeps that couldn't attend.
+        </li>
+        <li>RANK = votes are closed, and vote results are provided.</li>
+    </ul>
+
+    <fieldset class="well">
+        <label class="lead">Choose the current vote state</label>
+        {{ form(form) }}
+    </fieldset>
+
+{% endblock %}

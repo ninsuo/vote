@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Result calculation{% endblock %}
+
+{% block body %}
+
+    <div class="col-md-6">
+        <h3>The King</h3>
+
+        <div>
+            We are doing the sum of all scores every people given from 1 to 5 whatever the category.
+            The winner of the crown is the project having the highest score.
+        </div>
+
+        <br/>
+
+        <table>
+            <thead>
+            <tr>
+                <th width="80%">Project</th>
+                <th class="text-center">Points</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for projectId, score in king.scores %}
+                <tr>
+                    <td>{{ projects[projectId].title }}</td>
+                    <td class="text-center">{{ score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h3>Categories</h3>
+
+        <div>
+            We calculate the average score people given from 1 to 5 for each project and category.
+            Then, we order that list by descending score, and fill up winners for each category,
+            taking care of not counting winners on several categories.
+        </div>
+
+        <br/>
+
+        <table>
+            <thead>
+            <tr>
+                <th width="30%">Project</th>
+                <th width="30%">Category</th>
+                <th width="10%">Score</th>
+                <th width="30%">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for how in hows %}
+                <tr>
+                    <td>{{ projects[how.projectId].title }}</td>
+                    <td>{{ categories[how.categoryId].name }}</td>
+                    <td>{{ how.score|round(2) }}</td>
+                    <td class="label-{{ how.status[0] }}">{{ how.status[1] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

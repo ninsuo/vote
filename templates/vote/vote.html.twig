@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votes are open{% endblock %}
+
+{% block body %}
+
+    {% for project in projects %}
+
+        {{ include('vote/_ratings.html.twig') }}
+
+        <hr/>
+
+    {% endfor %}
+
+{% endblock %}
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/themes/css-stars.min.css"/>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bar-rating/1.2.2/jquery.barrating.min.js"></script>
+
+    <script type="text/javascript">
+        {{ include('vote/_ratings_show.js.twig') }}
+        {{ include('vote/_ratings_save.js.twig') }}
+    </script>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manage users{% endblock %}
+
+{% block body %}
+
+    <div class="well">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Identifier</th>
+                <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.userIdentifier }}</td>
+                    <td>
+                        {% if user.userIdentifier != me.userIdentifier %}
+                            {% if user.admin %}
+                                <a href="{{ path('admin_users_toggle_admin', {
+                                    token: csrf_token('user'),
+                                    uuid: user.uuid,
+                                }) }}" class="btn btn-danger">Remove Admin</a>
+                            {% else %}
+                                <a href="{{ path('admin_users_toggle_admin', {
+                                    token: csrf_token('user'),
+                                    uuid: user.uuid,
+                                }) }}" class="btn btn-success">Add Admin</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

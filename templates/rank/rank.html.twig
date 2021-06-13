@@ -1,0 +1,188 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Results{% endblock %}
+
+{% block body %}
+
+    {% if app.user.admin and 'RANK' != settings('state') %}
+        <div style="border: 5px solid red; padding:15px; font-size: 20px; color:red; text-align: center;">
+            <strong>
+                You see the results because you are admin, but they are not public yet.
+                <br/>
+                KEEP THE SECRET
+            </strong>
+        </div>
+    {% endif %}
+
+    <h3>The King</h3>
+
+    <div class="text-center">
+        <img style="width: 300px;" src="{{ asset('images/crown.png') }}"/>
+        <div>
+            <h4>{{ projects[king.id].title }}</h4>
+            <strong>{{ king.score }} points</strong>
+        </div>
+    </div>
+
+    <h3>Winners</h3>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Category</th>
+            <th>Project</th>
+            <th colspan="2">Score</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for categoryId, winner in winners.winners %}
+            <tr>
+                <td>
+                    {{ include('category.html.twig', {category: categories[categoryId], inline: false}) }}
+                </td>
+                <td>{{ winner.project.title|default('') }}</td>
+                <td width="20%">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ winner.score|default(0) * 100 / 5 }}%"
+                             aria-valuenow="{{ winner.score|default(0) }}" aria-valuemin="0" aria-valuemax="5"></div>
+                    </div>
+                </td>
+                <td>{{ winner.score|default(0)|round(3) }} / 5</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        {% if winners.multi|length %}
+            <tfoot>
+            <tr>
+                <td colspan="4" class="text-center">
+                    Projects {{ winners.multi|join(', ') }} could win several prizes but results
+                    are calculated to reward a maximum of projects.
+                    See <a href="{{ path('how') }}">how results were calculated</a>.
+                </td>
+            </tr>
+            </tfoot>
+        {% endif %}
+    </table>
+
+    <h3>Results by categories</h3>
+
+    <div class="row">
+
+        {% for category in categories %}
+
+            <div class="col-md-6">
+                <h4>
+                    {% if category.image %}
+                        <img src="data:image/png;base64,{{ category.image }}"
+                             style="max-width: 32px; max-height: 24px;"/>
+                    {% endif %}
+
+                    {{ category.name }}
+
+                    {% if category.image %}
+                        <img src="data:image/png;base64,{{ category.image }}"
+                             style="max-width: 32px; max-height: 24px;"/>
+                    {% endif %}
+                </h4>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Project</th>
+                        <th>Score</th>
+                        <th>Votes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set rank = 1 %}
+                    {% for projectId, data in byCategories[category.id]|default([]) %}
+
+                        {% set detail = '' %}
+                        {% for stars, count in data.detail %}
+                            {% if stars > 1 %}{% set detail = detail ~ ' / ' %}{% endif %}
+                            {% set detail = detail ~ stars ~ ': ' ~ count %}
+                        {% endfor %}
+
+                        <tr>
+                            <td>{{ rank }}</td>
+                            <td>{{ projects[projectId].title }}</td>
+                            <td>{{ data.score|round(3) }}</td>
+                            <td>
+                                <div class="tooltip"
+                                     data-toggle="tooltip"
+                                     data-html="true"
+                                     title="{{ detail }}">
+                                    {{ data.votes }}
+                                </div>
+                            </td>
+                        </tr>
+                        {% set rank = rank + 1 %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <h3>Details by projects</h3>
+
+    <div class="row">
+
+        {% for projectId, project in projects %}
+
+            <div class="col-md-12">
+
+                <p class="center"><strong>{{ project.title }}</strong></p>
+
+                <div class="row">
+                    {% for categoryId, category in categories %}
+
+                        <div class="col-md-{{ (12 / categories|length)|round(0, 'floor') }}">
+                            <p class="text-center">
+                                {{ include('category.html.twig', {category: category, inline: false}) }}
+                            </p>
+
+                            <table class="table">
+                                <tbody>
+                                {% for stars in 5..1 %}
+                                    <tr>
+                                        <td style="width: 30%;">{% for i in 1..stars %}⭐{% endfor %}</td>
+                                        <td style="width: 60%;">
+                                            {% set percent = byCategories[categoryId][projectId].percent[stars] %}
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" style="width: {{ percent }}%"
+                                                     aria-valuenow="{{ percent }}" aria-valuemin="0"
+                                                     aria-valuemax="100"></div>
+                                            </div>
+                                        </td>
+                                        <td style="width: 10%;">{{ byCategories[categoryId][projectId].detail[stars] }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+                    {% endfor %}
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script type="text/javascript">
+        $('.tooltip').tooltip();
+    </script>
+
+{% endblock %}

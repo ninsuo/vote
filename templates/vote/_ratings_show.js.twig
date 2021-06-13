@@ -1,0 +1,11 @@
+$(function () {
+    $('.rating').each(function () {
+        var that = $(this);
+        that.barrating({
+            theme: 'css-stars',
+            allowEmpty: true,
+            emptyValue: '0',
+            initialRating: '' + that.data('grade')
+        });
+    });
+});

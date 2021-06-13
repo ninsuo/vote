@@ -43,6 +43,16 @@ class MagicLinkRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function clearExpired()
+    {
+        $this->createQueryBuilder('l')
+             ->delete()
+             ->where('l.expiresAt < :now')
+             ->setParameter('now', new \DateTime())
+             ->getQuery()
+             ->execute();
+    }
+
     // /**
     //  * @return MagicLink[] Returns an array of MagicLink objects
     //  */
