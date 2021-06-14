@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
@@ -94,6 +95,7 @@ class ProjectController extends AbstractController
                 'label'       => 'New project name',
                 'constraints' => [
                     new NotBlank(),
+                    new Length(['max' => 64]),
                 ],
             ])
             ->add('submit', SubmitType::class, [
@@ -175,11 +177,17 @@ class ProjectController extends AbstractController
             ->createNamedBuilder('create-project', FormType::class, $entity)
             ->add('title', TextType::class, [
                 'label'       => 'New project title',
-                'constraints' => [],
+                'constraints' => [
+                    new NotBlank(),
+                    new Length(['max' => 64]),
+                ],
             ])
             ->add('position', TextType::class, [
                 'label'       => 'New project position',
-                'constraints' => [],
+                'constraints' => [
+                    new NotBlank(),
+                    new Range(['min' => -1000, 'max' => 1000]),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Create',

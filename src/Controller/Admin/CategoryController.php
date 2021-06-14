@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 
@@ -78,6 +79,7 @@ class CategoryController extends AbstractController
                 'label'       => 'New name',
                 'constraints' => [
                     new NotBlank(),
+                    new Length(['max' => 64]),
                 ],
             ])
             ->add('submit', SubmitType::class, [
@@ -181,6 +183,7 @@ class CategoryController extends AbstractController
                 'label'       => 'Category name',
                 'constraints' => [
                     new NotBlank(),
+                    new Length(['max' => 64]),
                 ],
             ])
             ->add('position', NumberType::class, [
