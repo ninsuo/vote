@@ -17,6 +17,10 @@ security:
       logout:
         path: /logout
         target: /login
+      remember_me:
+        secret: '%kernel.secret%'
+        lifetime: 604800
+        token_provider: 'Symfony\Bridge\Doctrine\Security\RememberMe\DoctrineTokenProvider'
 
   access_control:
     - { path: ^/login, roles: PUBLIC_ACCESS }
