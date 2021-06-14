@@ -86,6 +86,16 @@
                     <li><a href="{{ path('admin_state') }}">Current State ({{ settings('state') }})</a></li>
                 {% endif %}
             </ul>
+            {% if is_granted('ROLE_USER') %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item">
+                        <p class="navbar-text" style="color:#aaaaaa;">UUID: {{ app.user.userIdentifier }}</p>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+                    </li>
+                </ul>
+            {% endif %}
         </div>
     </div>
 </nav>
