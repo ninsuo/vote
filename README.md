@@ -62,4 +62,3 @@ Once you created your first user, you may want to run:
 ./bin/console user:list
 ./bin/console user:admin <your uuid>
 ```
-
