@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Project;
+use App\Repository\GradeRepository;
 use App\Repository\ProjectRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -27,9 +28,15 @@ class ProjectController extends AbstractController
      */
     private $projectRepository;
 
-    public function __construct(ProjectRepository $projectRepository)
+    /**
+     * @var GradeRepository
+     */
+    private $gradeRepository;
+
+    public function __construct(ProjectRepository $projectRepository, GradeRepository $gradeRepository)
     {
         $this->projectRepository = $projectRepository;
+        $this->gradeRepository   = $gradeRepository;
     }
 
     /**
@@ -63,6 +70,8 @@ class ProjectController extends AbstractController
         if (!$entity) {
             throw $this->createNotFoundException();
         }
+
+        $this->gradeRepository->removeByProject($entity);
 
         $this->projectRepository->remove($entity);
 

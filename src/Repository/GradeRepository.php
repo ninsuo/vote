@@ -22,6 +22,26 @@ class GradeRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    public function removeByProject(Project $project)
+    {
+        $this->createQueryBuilder('g')
+             ->delete()
+             ->where('g.projectId = :projectId')
+             ->setParameter('projectId', $project->getId())
+             ->getQuery()
+             ->execute();
+    }
+
+    public function removeByCategory(Category $category)
+    {
+        $this->createQueryBuilder('g')
+             ->delete()
+             ->where('g.categoryId = :categoryId')
+             ->setParameter('categoryId', $category->getId())
+             ->getQuery()
+             ->execute();
+    }
+
     /**
      * @return Grade[]
      */

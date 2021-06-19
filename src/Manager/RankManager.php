@@ -115,7 +115,7 @@ class RankManager
                     'projectId'  => $projectId,
                     'categoryId' => $categoryId,
                     'score'      => $data['score'],
-                    'status'     => ['warning', 'This project is the king'],
+                    'status'     => ['warning', 'This project is the winner'],
                 ];
 
                 continue;

@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
+use App\Repository\GradeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,9 +32,15 @@ class CategoryController extends AbstractController
      */
     private $categoryRepository;
 
-    public function __construct(CategoryRepository $categoryRepository)
+    /**
+     * @var GradeRepository
+     */
+    private $gradeRepository;
+
+    public function __construct(CategoryRepository $categoryRepository, GradeRepository $gradeRepository)
     {
         $this->categoryRepository = $categoryRepository;
+        $this->gradeRepository    = $gradeRepository;
     }
 
     /**
@@ -165,6 +172,8 @@ class CategoryController extends AbstractController
         if (!$entity) {
             throw $this->createNotFoundException();
         }
+
+        $this->gradeRepository->removeByCategory($entity);
 
         $this->categoryRepository->remove($entity);
 
